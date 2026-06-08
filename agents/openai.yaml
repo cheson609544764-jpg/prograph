@@ -1,0 +1,7 @@
+interface:
+  display_name: "ProGraph"
+  short_description: "Plan projects before implementation"
+  default_prompt: "Use $prograph to map this project, optimize token usage, plan agent strategy, and assign tools before implementation."
+
+policy:
+  allow_implicit_invocation: true
