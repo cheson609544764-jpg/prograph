@@ -1,150 +1,132 @@
 ---
-description: Project pre-analysis — map structure, optimize tokens, plan multi-agent strategy, and assign skills before implementation
-argument-hint: Paste your project description or brief here
+description: Project analysis — preflight new projects or audit existing projects with structure, token, agent, tool, risk, and validation planning
+argument-hint: Paste a project brief, repo path, PR, branch, or completed project description here
 ---
 
-# ProGraph — Project Pre-Analysis Framework
+# ProGraph — Project Analysis Framework
 
-You are helping a developer fully understand and prepare for a project BEFORE implementation begins. Your goal is to produce a clear mental map, optimize execution efficiency, and pre-configure the right tools.
+You are helping a developer understand a project clearly before deciding what to do next. ProGraph has two modes:
+
+- **Preflight Mode**: for project ideas, briefs, or work that has not been implemented yet.
+- **Audit Mode**: for existing repositories, finished projects, branches, PRs, or deliverables.
+
+Choose the mode from the developer's request. If the mode is unclear, ask one short clarifying question.
 
 ## Core Principles
 
-- **Deep understanding first**: Don't rush to solutions. Fully comprehend what the developer wants to build.
-- **Ask before assuming**: If the project description is vague or incomplete, ask targeted questions to fill gaps.
-- **Developer confirms each dimension**: Never proceed to the next dimension without explicit developer confirmation.
-- **Output in developer's language**: Match the language the developer uses (Chinese/English/etc).
+- **Understand before acting**: Build the project map before suggesting work.
+- **Ask only when needed**: If critical context is missing and cannot be inferred, ask targeted questions.
+- **Separate evidence from inference**: Especially in Audit Mode, state what you observed versus what you inferred.
+- **Developer controls execution**: Do not implement or fix anything until the developer explicitly asks.
+- **Output in developer's language**: Match the language the developer uses.
 
 ---
 
 ## Input
 
-Developer's project description: $ARGUMENTS
+Developer's project description or target: $ARGUMENTS
 
 ---
 
-## Dimension 1: Project Mind Map (思维导图)
+## Preflight Mode — Before Implementation
 
-**Goal**: Build a complete, layered understanding of the project's structure, logic flow, and dependencies.
+Use this mode when the developer describes a project to build.
+
+Work through all 4 dimensions in order. Do not move to the next dimension until the developer explicitly confirms the current one.
+
+### Dimension 1: Project Mind Map
+
+**Goal**: Build a complete, layered understanding of the project's structure, logic flow, dependencies, and execution order.
 
 **Actions**:
 
-1. Read and deeply analyze the developer's project description
-2. Identify the core goal, sub-goals, logical layers, and execution order
-3. If the description is unclear or missing critical details, ask targeted questions:
+1. Analyze the project description deeply.
+2. Identify the core goal, sub-goals, logical layers, and execution order.
+3. If the description is unclear, ask targeted questions:
    - What is the final deliverable?
-   - What are the key constraints (tech stack, timeline, dependencies)?
-   - Are there parts you're unsure about or want suggestions on?
-   - What's the expected input/output for each major part?
-4. Once all gaps are filled, produce a **text-based mind map** using this format:
+   - What are the key constraints such as stack, timeline, dependencies, or quality bar?
+   - What are the expected inputs and outputs?
+   - Which parts are fixed requirements versus open to suggestions?
+4. Produce a text-based mind map:
 
+```text
+Project: [Name]
+|-- Part 1: [Name] - [simple/medium/complex]
+|   |-- 1.1 [Sub-task]
+|   |-- 1.2 [Sub-task]
+|   `-- Dependencies: [what it needs from other parts]
+|-- Part 2: [Name] - [simple/medium/complex]
+|   |-- 2.1 [Sub-task]
+|   `-- 2.2 [Sub-task]
+`-- Execution Order: [ordered parts]
 ```
-📋 Project: [Name]
-├── Part 1: [Name] — [simple/medium/complex]
-│   ├── 1.1 [Sub-task]
-│   ├── 1.2 [Sub-task]
-│   └── Dependencies: [what it needs from other parts]
-├── Part 2: [Name] — [simple/medium/complex]
-│   ├── 2.1 [Sub-task]
-│   └── 2.2 [Sub-task]
-└── Part 3: [Name] — [simple/medium/complex]
-    └── ...
-```
 
-5. Mark each part's complexity level: **simple** / **medium** / **complex**
-6. Show dependencies and execution order between parts
-7. **Ask developer to confirm**: "Does this mind map accurately represent your project? Any adjustments?"
+5. Ask: "Does this mind map accurately represent your project? Any adjustments?"
 
-**Wait for confirmation before proceeding to Dimension 2.**
+**Wait for confirmation before Dimension 2.**
 
----
+### Dimension 2: Token Optimization
 
-## Dimension 2: Token Optimization Analysis (Token优化)
+**Goal**: Reduce token consumption without sacrificing project quality.
 
-**Goal**: Identify opportunities to reduce token consumption without sacrificing project quality.
+Analyze whether each part can use:
 
-**Actions**:
+- templates or reusable code
+- shorter scoped prompts with examples
+- existing libraries instead of generated-from-scratch logic
+- smaller/faster models for low-risk parts
+- narrower context loading
 
-1. For each part in the mind map, analyze:
-   - Can boilerplate/repetitive code be generated with templates instead of full LLM generation?
-   - Are there parts that can use shorter prompts with clear examples?
-   - Can any parts reuse existing code/libraries instead of generating from scratch?
-   - Are there parts where a smaller/faster model (like Haiku) is sufficient?
-   - Can context be scoped more tightly for certain parts to avoid loading unnecessary files?
-
-2. Present findings in a table:
+Present:
 
 | Part | Optimization Strategy | Estimated Token Savings | Quality Impact |
-|------|----------------------|------------------------|----------------|
+|------|----------------------|--------------------------|----------------|
 | Part 1 | [strategy] | ~X% reduction | None / Minimal |
-| Part 2 | [strategy] | ~X% reduction | None / Minimal |
 
-3. Provide total estimated savings
-4. **Ask developer**: "Would you like to apply these optimizations? Which ones do you approve?"
+Ask which optimizations the developer approves.
 
-**Wait for confirmation before proceeding to Dimension 3.**
+**Wait for confirmation before Dimension 3.**
 
----
+### Dimension 3: Multi-Agent Strategy
 
-## Dimension 3: Multi-Agent Strategy (多Agent协同)
+**Goal**: Identify complex parts that benefit from parallel or adversarial agents.
 
-**Goal**: Identify complex parts that benefit from parallel multi-agent execution to improve accuracy and coverage.
+For each complex part, evaluate:
 
-**Actions**:
+- whether one agent may miss important details
+- whether architecture, implementation, testing, and review can be split
+- whether independent sub-tasks can run simultaneously
+- whether the higher token cost is justified
 
-1. Review all parts marked as **complex** in the mind map
-2. For each complex part, evaluate:
-   - Is there risk of a single agent missing important details?
-   - Can the work be split into parallel perspectives (e.g., architecture + implementation + testing)?
-   - Would adversarial verification (one agent builds, another reviews) improve quality?
-   - Are there independent sub-tasks that can run simultaneously?
-
-3. Present multi-agent recommendations:
+Present:
 
 | Complex Part | Recommended Agents | Agent Roles | Why Multi-Agent |
-|-------------|-------------------|-------------|-----------------|
+|--------------|--------------------|-------------|-----------------|
 | Part X | 2-3 agents | Agent A: [role], Agent B: [role] | [reason] |
 
-4. Explain trade-offs: more agents = better coverage but higher token cost
-5. **Ask developer**: "Do you want to use multi-agent mode for these parts? Which ones?"
+Ask which multi-agent recommendations the developer approves.
 
-**Wait for confirmation before proceeding to Dimension 4.**
+**Wait for confirmation before Dimension 4.**
 
----
+### Dimension 4: Skill/Tool Assignment
 
-## Dimension 4: Skill/Tool Assignment (工具配备)
+**Goal**: Pre-assign the best skills, tools, or workflows for each part.
 
-**Goal**: Pre-assign the most suitable skills and tools for each part of the project.
+Consider available skills and tools. Recommend direct implementation only when no specific skill/tool adds value.
 
-**Actions**:
-
-1. For each part in the mind map, consider available skills:
-   - `/feature-dev` — for structured feature development with codebase exploration
-   - `/code-review` — for reviewing code quality after implementation
-   - `/security-review` — for security-sensitive parts
-   - `/deep-research` — for parts requiring external knowledge or research
-   - `/verify` — for confirming features work correctly
-   - `/simplify` — for post-implementation cleanup
-   - `/init` — for new project setup
-   - Custom workflows — for parts needing complex orchestration
-
-2. Present skill assignments:
+Present:
 
 | Part | Recommended Skill/Tool | Reason |
-|------|----------------------|--------|
-| Part 1 | /feature-dev | Structured approach needed for complex feature |
-| Part 2 | /deep-research + implementation | Requires external knowledge first |
-| Part 3 | Basic implementation + /verify | Simple enough for direct coding |
+|------|------------------------|--------|
+| Part 1 | [skill/tool] | [reason] |
 
-3. For parts with no matching skill, suggest whether a custom approach or workflow is needed
-4. **Ask developer**: "Do you approve these tool assignments? Any changes?"
+Ask the developer to approve or adjust the assignments.
 
----
+### Preflight Final Output
 
-## Final Output: Execution Plan
+After all 4 dimensions are confirmed, produce:
 
-After all 4 dimensions are confirmed, produce a final execution plan:
-
-```
+```text
 === ProGraph Execution Plan ===
 
 Project: [Name]
@@ -152,22 +134,115 @@ Total Parts: [N]
 Estimated Complexity: [Simple/Medium/Complex]
 
 Execution Order:
-1. [Part] — [skill] — [single/multi-agent] — [token optimization applied?]
-2. [Part] — [skill] — [single/multi-agent] — [token optimization applied?]
-...
+1. [Part] - [skill/tool] - [single/multi-agent] - [token optimization]
+2. [Part] - [skill/tool] - [single/multi-agent] - [token optimization]
 
 Token Optimization: ~X% savings approved
 Multi-Agent Parts: [list]
-Skills Pre-loaded: [list]
+Skills/Tools: [list]
 
 Ready to begin implementation? (Y/N)
 ```
 
 ---
 
-## Notes
+## Audit Mode — After Implementation
 
-- This skill is for ANALYSIS ONLY. Do not begin implementation until the developer explicitly says to start.
-- If the developer changes their mind on any dimension, re-run that dimension.
-- Keep all outputs concise but comprehensive.
-- The mind map is the foundation — if it's wrong, everything else will be wrong. Get it right first.
+Use this mode when the developer points to an existing project, repository, branch, PR, or finished deliverable.
+
+Read the available project context first. Inspect README/docs, file structure, source modules, build files, tests, scripts, and configuration. Then produce one concise audit report. Do not modify files unless the developer explicitly asks.
+
+### Dimension 1: Actual Structure Map
+
+**Goal**: Describe what was actually built.
+
+Identify:
+
+- apparent project goal
+- major modules and responsibilities
+- dependency and runtime flow
+- complexity hotspots
+- docs-code alignment signals
+
+Use:
+
+```text
+Project: [Name]
+|-- Area 1: [Name] - [simple/medium/complex]
+|   |-- Evidence: [files or signals]
+|   `-- Role: [what this area does]
+|-- Area 2: [Name] - [simple/medium/complex]
+|   |-- Evidence: [files or signals]
+|   `-- Role: [what this area does]
+`-- Runtime/Delivery Path: [how it appears to run or ship]
+```
+
+### Dimension 2: Goal Coverage
+
+**Goal**: Check whether the implementation matches its intended goal.
+
+If an original brief exists, compare against it. If no brief exists, infer the goal from README, docs, public APIs, file names, tests, and project metadata, and label the inference.
+
+Classify each area:
+
+- `covered`: implemented and supported by evidence
+- `partial`: present but incomplete or unclear
+- `missing`: expected but absent
+- `unknown`: cannot be judged from available context
+
+### Dimension 3: Architecture and Dependency Risks
+
+**Goal**: Surface real risks, not generic advice.
+
+Look for:
+
+- unclear module ownership
+- duplicated or overly complex logic
+- hidden coupling
+- fragile configuration or installation steps
+- stale docs or README mismatch
+- dependency, security, or privacy concerns when relevant
+
+Prioritize concrete findings with evidence.
+
+### Dimension 4: Validation Gaps
+
+**Goal**: Understand what is proven and what still needs verification.
+
+Review tests, scripts, CI, manual verification notes, and expected runtime behavior.
+
+Include relevant commands to run when discoverable. If checks cannot be run, explain the blocker.
+
+### Dimension 5: Improvement Plan
+
+**Goal**: Turn the audit into ranked next steps.
+
+Produce:
+
+```text
+=== ProGraph Audit Report ===
+
+Project: [Name]
+Overall Health: [Strong / Mostly solid / Needs work / Risky]
+Estimated Complexity: [Simple / Medium / Complex]
+
+Structure:
+[actual structure map]
+
+Coverage:
+[covered / partial / missing / unknown summary]
+
+Top Risks:
+1. [risk] - [evidence] - [impact]
+2. [risk] - [evidence] - [impact]
+
+Validation:
+[what was checked, what remains]
+
+Recommended Next Steps:
+1. [highest-value fix or verification]
+2. [next step]
+3. [next step]
+
+Ready to fix or deepen any item? (Y/N)
+```
